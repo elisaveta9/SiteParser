@@ -1,5 +1,7 @@
 import lenta.LentaParser;
 import lenta.LentaSettings;
+import lifeofpix.LifeofpixParser;
+import lifeofpix.LifeofpixSettings;
 import model.Image;
 import model.News;
 import model.ProductReview;
@@ -44,7 +46,7 @@ public class Main {
             throw new RuntimeException(e);
         }*/
 
-        ParserWorker<ArrayList<Image>> parserWorker= new ParserWorker<>(new WallpaperParser(), new WallpaperSettings(1,5));
+        ParserWorker<ArrayList<Image>> parserWorker= new ParserWorker<>(new LifeofpixParser(), new LifeofpixSettings(1,15));
 
         parserWorker.onNewDataList.add(new NewDataImage());
         parserWorker.onCompletedList.add(new Completed());
