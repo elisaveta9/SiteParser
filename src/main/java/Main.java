@@ -1,3 +1,5 @@
+import irecommend.IrecommendParser;
+import irecommend.IrecommendSettings;
 import lenta.LentaParser;
 import lenta.LentaSettings;
 import lifeofpix.LifeofpixParser;
@@ -22,7 +24,8 @@ public class Main {
 
     public static void main(String[] arg){
 
-        ParserWorker<ArrayList<ProductReview>> parser = new ParserWorker<>(new OtzovikParser(), new OtzovikSettings(1, 3));
+        ParserWorker<ArrayList<ProductReview>> parser = new ParserWorker<>(new IrecommendParser(),
+                new IrecommendSettings(1, 3));
 
         parser.onCompletedList.add(new Completed());
         parser.onNewDataList.add(new NewDataProductReview());
