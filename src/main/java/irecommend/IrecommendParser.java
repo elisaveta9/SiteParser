@@ -1,6 +1,5 @@
 package irecommend;
 
-import loader.HtmlLoader;
 import model.Feedback;
 import model.ProductReview;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 
 public class IrecommendParser implements Parser<ArrayList<ProductReview>> {
     @Override
-    public ArrayList<ProductReview> Parse(@NotNull Document document, @NotNull ParserSettings parserSettings) throws IOException {
+    public ArrayList<ProductReview> Parse(@NotNull Document document, @NotNull ParserSettings parserSettings) throws IOException, InterruptedException {
         ArrayList<ProductReview> list = new ArrayList<>();
 
         Elements elements = document.getElementsByClass("title");
@@ -30,7 +29,7 @@ public class IrecommendParser implements Parser<ArrayList<ProductReview>> {
         return list;
     }
 
-    private ArrayList<Feedback> parseFeedbacks(String url) throws IOException {
+    private ArrayList<Feedback> parseFeedbacks(String url) throws IOException, InterruptedException {
         ArrayList<Feedback> list = new ArrayList<>();
         Document document = Jsoup.connect(url).get();
 
@@ -39,6 +38,7 @@ public class IrecommendParser implements Parser<ArrayList<ProductReview>> {
             String urlFeedback = "https://irecommend.ru" +
                     item.getElementsByClass("more").first().attr("href");
             list.add(parseFeedback(urlFeedback));
+            Thread.sleep(7500);
         }
 
         return list;
@@ -58,17 +58,20 @@ public class IrecommendParser implements Parser<ArrayList<ProductReview>> {
         }
         String title = document.getElementsByClass("reviewTitle").first().text();
         String advantages = "";
-        Elements advantagesEl = document.getElementsByClass("plus").first().children().get(1).children();
+        Elements advantagesEl = document.getElementsByClass("plus");
+        if (!advantagesEl.isEmpty()) {
+            advantagesEl = advantagesEl.first().children().get(1).children();
 
-        for (Element advantageEl : advantagesEl)
-            advantages += advantageEl.text() + "; ";
-
+            for (Element advantageEl : advantagesEl)
+                advantages += advantageEl.text() + "; ";
+        }
         String disadvantages = "";
-        Elements disadvantagesEl = document.getElementsByClass("plus").first().children().get(1).children();
-
-        for (Element disadvantageEl : advantagesEl)
-            disadvantages += disadvantageEl.text() + "; ";
-
+        Elements disadvantagesEl = document.getElementsByClass("plus");
+        if (!disadvantagesEl.isEmpty()) {
+            disadvantagesEl = disadvantagesEl.first().children().get(1).children();
+            for (Element disadvantageEl : disadvantagesEl)
+                disadvantages += disadvantageEl.text() + "; ";
+        }
         String body = "";
         Elements paragraphs = document.getElementsByClass("views-field-teaser reviewText").
                 select("p");

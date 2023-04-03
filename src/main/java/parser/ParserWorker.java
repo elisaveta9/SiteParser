@@ -28,7 +28,7 @@ public class ParserWorker<T> {
 
     public void setParser(@NotNull Parser<T> parser) {   this.parser = parser;   }
 
-    public void Start() throws IOException {
+    public void Start() throws IOException, InterruptedException {
         isActive = true;
         Worker();
     }
@@ -36,7 +36,7 @@ public class ParserWorker<T> {
         isActive = false;
     }
 
-    private void Worker() throws IOException {
+    private void Worker() throws IOException, InterruptedException {
         for (int i = parserSettings.getStartPoint(); i <= parserSettings.getEndPoint(); i++) {
             if (!isActive) {
                 onCompletedList.get(0).OnCompleted(this);

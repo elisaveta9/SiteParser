@@ -8,6 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public interface Parser<T>  {
-    T Parse(@NotNull Document document, @NotNull ParserSettings parserSettings) throws IOException;
+    T Parse(@NotNull Document document, @NotNull ParserSettings parserSettings) throws IOException, InterruptedException;
 
 }

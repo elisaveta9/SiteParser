@@ -10,12 +10,8 @@ import model.ProductReview;
 import newData.NewDataImage;
 import newData.NewDataNews;
 import newData.NewDataProductReview;
-import otzovik.OtzovikParser;
-import otzovik.OtzovikSettings;
 import parser.Completed;
 import parser.ParserWorker;
-import wallpaper_abyss.WallpaperParser;
-import wallpaper_abyss.WallpaperSettings;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +30,8 @@ public class Main {
             parser.Start();
             parser.Abort();
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 

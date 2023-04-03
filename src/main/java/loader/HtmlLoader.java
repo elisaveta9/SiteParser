@@ -3,7 +3,6 @@ package loader;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import parser.ParserSettings;
 
 import java.io.IOException;
 
