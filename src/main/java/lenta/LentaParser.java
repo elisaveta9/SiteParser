@@ -34,20 +34,33 @@ public class LentaParser implements Parser<ArrayList<News>> {
             htmlLoader = new HtmlLoader("https://lenta.ru/" + urlPage);
         else htmlLoader = new HtmlLoader(urlPage);
         Document document = htmlLoader.GetSource();
-        String date, country, text;
+        String date, topic = "", text = "";
         String title = document.title();
-        if (title.matches("^* - Мослента$")) {
-            date = document.getElementsByClass("_1Lg_CbTX _240YeLMx").text();
-            country = "Россия";
-            text = document.getElementsByClass("jsx-1665533423 text txkWXQba").text();
+        if (title.endsWith("Мослента")) {
+            date = document.getElementsByClass("qzByRHub P5lPq1qA").text();
+            topic = document.getElementsByClass("jsx-2838600671 rubric").text();
+            Elements paragraphs = document.getElementsByClass("jsx-1117196867");
+            for (Element paragraph : paragraphs) {
+                text += paragraph.text() + "\n";
+            }
         }
-        else {
+        else if (title.endsWith("Lenta.ru")) {
             date = document.getElementsByClass("topic-header__item topic-header__time").text();
-            country = document.getElementsByClass("topic-header__item topic-header__rubric").text();
+            topic = document.getElementsByClass("topic-header__item topic-header__rubric").text();
             text = document.getElementsByClass("topic-body__content").text();
         }
+        else {
+            date = document.getElementsByClass("qzByRHub P5lPq1qA").text();
+            Elements tags = document.getElementsByClass("jsx-1534823328 jsx-2050113987 tag");
+            for (Element tag : tags) {
+                topic += tag.text() + " ";
+            }
+            Elements paragraphs = document.getElementsByClass("jsx-342317846 vikont");
+            for (Element paragraph : paragraphs) {
+                text += paragraph.text() + "\n";
+            }
+        }
 
-        return  new News(title, date, country, text);
-
+        return  new News(title, date, topic, text);
     }
 }

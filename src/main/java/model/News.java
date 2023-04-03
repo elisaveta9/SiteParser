@@ -6,16 +6,16 @@ public class News {
 
     private String title;
     private String datePublication;
-    private String country;
+    private String topic;
     private String text;
 
     public News() {
     }
 
-    public News(String title, String datePublication, String country, String text) {
+    public News(String title, String datePublication, String topic, String text) {
         this.title = title;
         this.datePublication = datePublication;
-        this.country = country;
+        this.topic = topic;
         this.text = text;
     }
 
@@ -23,7 +23,7 @@ public class News {
     public String toString() {
         return "Название новости: " + title +
                 "\n Дата публикации: " + datePublication +
-                "\n Страна: " + country +
+                "\n Тема: " + topic +
                 "\n Текст статьи: " + text;
     }
 
@@ -43,12 +43,12 @@ public class News {
         this.datePublication = datePublication;
     }
 
-    public String getCountry() {
-        return country;
+    public String getTopic() {
+        return topic;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public String getText() {
