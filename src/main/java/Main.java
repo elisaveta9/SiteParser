@@ -21,7 +21,7 @@ public class Main {
     public static void main(String[] arg){
 
         ParserWorker<ArrayList<ProductReview>> parser = new ParserWorker<>(new IrecommendParser(),
-                new IrecommendSettings(1, 3));
+                new IrecommendSettings(0, 2));
 
         parser.onCompletedList.add(new Completed());
         parser.onNewDataList.add(new NewDataProductReview());

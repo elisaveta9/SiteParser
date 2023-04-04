@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.net.Proxy;
 
 public class HtmlLoader {
 
@@ -21,12 +22,14 @@ public class HtmlLoader {
         if (url.isEmpty()) {
             throw new NullPointerException("—сылка не была установлена");
         }
-        return Jsoup.connect(url).get();
+        return Jsoup.connect(url)
+                .get();
     }
 
     public static @NotNull Document GetSourceByPageId(int id) throws IOException {
         String currentUrl = url.replace("{CurrentId}", Integer.toString(id));
-        return Jsoup.connect(currentUrl).get();
+        return Jsoup.connect(currentUrl)
+                .get();
     }
 
 }

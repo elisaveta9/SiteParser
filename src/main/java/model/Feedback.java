@@ -23,12 +23,23 @@ public class Feedback {
 
     @Override
     public String toString() {
-        return "Имя пользователя: " + username + "\n" +
+        if (advantages.isEmpty() || advantages.equals(""))
+            advantages = "не указаны";
+        if (disadvantages.isEmpty() || disadvantages.equals(""))
+            disadvantages = "не указаны";
+        if (!titleFeedback.isEmpty() && !titleFeedback.equals(""))
+            return "Имя пользователя: " + username + "\n" +
                 "Заголовок отзыва: " + titleFeedback + "\n" +
-                "Рейтинг продукта: " + rating + "из 5" + "\n" +
+                "Рейтинг продукта: " + rating + " из 5" + "\n" +
                 "Достоинства продукта: " + advantages + "\n" +
                 "Недостатки: " + disadvantages + "\n" +
                 "Описание: " + body;
+        else
+            return "Имя пользователя: " + username + "\n" +
+                    "Рейтинг продукта: " + rating + " из 5" + "\n" +
+                    "Достоинства продукта: " + advantages + "\n" +
+                    "Недостатки: " + disadvantages + "\n" +
+                    "Описание: " + body;
     }
 
     public String getUsername() {

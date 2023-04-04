@@ -11,7 +11,9 @@ import parser.Parser;
 import parser.ParserSettings;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class IrecommendParser implements Parser<ArrayList<ProductReview>> {
     @Override
@@ -24,6 +26,7 @@ public class IrecommendParser implements Parser<ArrayList<ProductReview>> {
             String urlReview = "https://irecommend.ru" + el.select("a").attr("href");
             ProductReview product = new ProductReview(productName,
                     parseFeedbacks(urlReview));
+            list.add(product);
         }
 
         return list;
@@ -31,21 +34,30 @@ public class IrecommendParser implements Parser<ArrayList<ProductReview>> {
 
     private ArrayList<Feedback> parseFeedbacks(String url) throws IOException, InterruptedException {
         ArrayList<Feedback> list = new ArrayList<>();
-        Document document = Jsoup.connect(url).get();
+        Document document = Jsoup.connect(url)
+                .get();
+        Random random = new Random();
+        int time;
 
         Elements items = document.getElementsByClass("list-comments").first().children();
         for (Element item : items) {
             String urlFeedback = "https://irecommend.ru" +
                     item.getElementsByClass("more").first().attr("href");
             list.add(parseFeedback(urlFeedback));
-            Thread.sleep(7500);
+            time = random.nextInt() % 5000;
+            if (time < 0) time *= -1;
+            Thread.sleep(time);
         }
 
+        time = random.nextInt() % 5000;
+        if (time < 0) time *= -1;
+        Thread.sleep(time);
         return list;
     }
 
     private Feedback parseFeedback(String url) throws IOException {
-        Document document = Jsoup.connect(url).get();
+        Document document = Jsoup.connect(url)
+                .get();
         int rating = 0;
 
         String username = document.getElementsByClass("reviewer").text();
