@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Paths;
 
 public class ImageLoader {
 
-    private static String IMAGE_DESTINATION_FOLDER = "D:/java/LandscapeWallpaper";
+    private static String IMAGE_DESTINATION_FOLDER = Paths.get("").toAbsolutePath().toString() + "/output/";
 
     public ImageLoader(){
 

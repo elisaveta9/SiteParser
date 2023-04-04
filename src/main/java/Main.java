@@ -15,48 +15,72 @@ import parser.ParserWorker;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] arg){
 
-        ParserWorker<ArrayList<ProductReview>> parser = new ParserWorker<>(new IrecommendParser(),
-                new IrecommendSettings(0, 2));
+        Scanner in = new Scanner(System.in);
+        System.out.println("Парсить:\n" +
+                "1. Сайт новостей lenta\n" +
+                "2. Сайт с рецензиями на товары irecommend\n" +
+                "3. Сайт с изображениями lifeofpix");
+        int site = in.nextInt();
+        if (site < 1 || site > 3) { System.out.println("Некорректное значение"); return; }
 
-        parser.onCompletedList.add(new Completed());
-        parser.onNewDataList.add(new NewDataProductReview());
+        System.out.println("Начать с страницы");
+        int begin = in.nextInt();
+        System.out.println("Закончить на странице");
+        int end = in.nextInt();
 
-        try {
-            parser.Start();
-            parser.Abort();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        if (begin < 1 || begin > end) { System.out.println("Некорректное значение"); return; }
+
+        if (site == 1){
+            ParserWorker<ArrayList<News>> parserWorker = new ParserWorker<>(new LentaParser(),
+                    new LentaSettings(begin, end));
+
+            parserWorker.onCompletedList.add(new Completed());
+            parserWorker.onNewDataList.add(new NewDataNews());
+
+            try {
+                parserWorker.Start();
+                parserWorker.Abort();
+                return;
+            }catch (IOException | InterruptedException e){
+                throw new RuntimeException(e);
+            }
         }
+        if (site == 2) {
+            ParserWorker<ArrayList<ProductReview>> parser = new ParserWorker<>(new IrecommendParser(),
+                    new IrecommendSettings(begin - 1, end - 1));
 
-        /*ParserWorker<ArrayList<News>> parserWorker = new ParserWorker<>(new LentaParser(), new LentaSettings(1, 5));
+            parser.onCompletedList.add(new Completed());
+            parser.onNewDataList.add(new NewDataProductReview());
 
-        parserWorker.onCompletedList.add(new Completed());
-        parserWorker.onNewDataList.add(new NewDataNews());
+            try {
+                parser.Start();
+                parser.Abort();
+                return;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (site == 3){
+            ParserWorker<ArrayList<Image>> parserWorker= new ParserWorker<>(new LifeofpixParser(),
+                    new LifeofpixSettings(begin, end));
 
-        try {
-            parserWorker.Start();
-            parserWorker.Abort();
-        }catch (IOException e){
-            throw new RuntimeException(e);
-        }*/
+            parserWorker.onNewDataList.add(new NewDataImage());
+            parserWorker.onCompletedList.add(new Completed());
 
-        /*ParserWorker<ArrayList<Image>> parserWorker= new ParserWorker<>(new LifeofpixParser(), new LifeofpixSettings(1,15));
-
-        parserWorker.onNewDataList.add(new NewDataImage());
-        parserWorker.onCompletedList.add(new Completed());
-
-        try {
-            parserWorker.Start();
-            parserWorker.Abort();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
+            try {
+                parserWorker.Start();
+                parserWorker.Abort();
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

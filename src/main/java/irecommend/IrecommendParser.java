@@ -11,7 +11,6 @@ import parser.Parser;
 import parser.ParserSettings;
 
 import java.io.IOException;
-import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Random;
 
